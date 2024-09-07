@@ -1,9 +1,10 @@
 import { CodeEditor } from "./components/CodeEditor";
+import { problem } from "./lib/data";
 
 function App() {
   return (
     <>
-      <CodeEditor />
+      <CodeEditor problem={problem} />
     </>
   );
 }

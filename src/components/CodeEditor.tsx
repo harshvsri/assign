@@ -4,24 +4,52 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Editor from "@monaco-editor/react";
+import Spinner from "@/components/Spinner";
+import Example from "./Example";
+import { ResultDialog } from "./ResultDialog";
 
-export function CodeEditor() {
+interface CodeEditorProps {
+  problem: {
+    title: string;
+    description: string;
+    difficulty: string;
+    examples: {
+      input: string;
+      output: string;
+      explanation: string;
+    }[];
+  };
+}
+
+export function CodeEditor({ problem }: CodeEditorProps) {
   const [code, setCode] = useState("// Write your code here");
+  const [result, setResult] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleEditorChange = (value: string | undefined) => {
-    setCode(value || "");
-  };
-
-  const handleRun = () => {
-    console.log("Run code");
-    // Implement run logic here
-  };
-
-  const handleSubmit = () => {
-    console.log("Submit code");
-    // Implement submit logic here
+  const handleSubmit = async () => {
+    setLoading(true);
+    const payload = {
+      source_code: code,
+      language_id: 63,
+      stdin: "3\n1 3 5",
+      expected_output: "9",
+    };
+    const res = await fetch("http://localhost:2358/submissions/?wait=true", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    const result = await res.json();
+    setLoading(false);
+    setResult(result);
+    setOpen(true);
+    console.log(result);
   };
 
   return (
@@ -29,19 +57,17 @@ export function CodeEditor() {
       <ResizablePanelGroup direction="horizontal" className="h-full">
         <ResizablePanel defaultSize={30} minSize={20} maxSize={50}>
           <div className="h-full p-4 text-gray-200 overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-4">Problem Description</h2>
-            <p className="text-gray-300">
-              Given an array of integers nums and an integer target, return
-              indices of the two numbers such that they add up to target. You
-              may assume that each input would have exactly one solution, and
-              you may not use the same element twice. You can return the answer
-              in any order.
-            </p>
-            <h3 className="text-xl font-semibold mt-4 mb-2">Example:</h3>
-            <pre className="bg-[#2d2d2d] p-2 rounded whitespace-pre-wrap text-gray-300">
-              Input: nums = [2,7,11,15], target = 9 Output: [0,1] Explanation:
-              Because nums[0] + nums[1] == 9, we return [0, 1].
-            </pre>
+            <h2 className="text-2xl font-bold mb-4">
+              {problem.title}
+              <Badge variant="outline" className="ml-2 text-green-500">
+                {problem.difficulty}
+              </Badge>
+            </h2>
+            <p className="text-gray-300">{problem.description}</p>
+            <h3 className="text-xl font-semibold mt-4 mb-2">Examples:</h3>
+            {problem.examples.map((example, index) => (
+              <Example example={example} key={index} />
+            ))}
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
@@ -52,7 +78,9 @@ export function CodeEditor() {
                 height="100%"
                 defaultLanguage="javascript"
                 defaultValue={code}
-                onChange={handleEditorChange}
+                onChange={(value) => {
+                  setCode(value || "");
+                }}
                 theme="vs-dark"
                 options={{
                   minimap: { enabled: false },
@@ -64,25 +92,29 @@ export function CodeEditor() {
               />
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={10}>
+            <ResizablePanel defaultSize={10} maxSize={20}>
               <div
                 className="h-full p-4 flex flex-col justify-end space-y-4"
-                style={{ backgroundColor: "#252525" }}
+                style={{ backgroundColor: "#1e1e1e" }}
               >
                 <div className="flex justify-end space-x-4">
                   <Button
-                    onClick={handleRun}
-                    variant="secondary"
-                    className="bg-[#3a3a3a] hover:bg-[#4a4a4a]"
+                    variant="default"
+                    className="text-white bg-[#3a3a3a] hover:bg-[#4a4a4a]"
                   >
                     Run
                   </Button>
                   <Button
                     onClick={handleSubmit}
-                    className="bg-green-600 hover:bg-green-700"
+                    className="text-white  bg-green-600 hover:bg-green-700"
                   >
-                    Submit
+                    {loading ? <Spinner /> : "Submit"}
                   </Button>
+                  <ResultDialog
+                    result={result}
+                    open={open}
+                    onOpenChange={setOpen}
+                  />
                 </div>
               </div>
             </ResizablePanel>

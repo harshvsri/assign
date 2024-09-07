@@ -4,23 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --primary: #f9f4da;
-  --yellow: #fcba28;
-  --background-color: #0f0d0e;
-  --font-size: 1.3rem;
-  --font-weight: 400;
-  --mono: "DM Serif Display", serif;
-  --sans: "DM Sans", sans-serif;
-
-  line-height: 1.5;
-  color-scheme: light dark;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 html {
   box-sizing: border-box;
 }
@@ -28,45 +11,6 @@ html {
 *::before,
 *::after {
   box-sizing: inherit;
-}
-
-nav {
-  padding: 1rem;
-  ul {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    list-style: none;
-    padding: 0 5rem;
-
-    img {
-      width: 2rem;
-    }
-
-    .sign-up {
-      padding: 0.5rem 2rem;
-      font-weight: bold;
-      font-size: large;
-      text-decoration: none;
-      color: var(--yellow);
-      border: 2px solid var(--yellow);
-      border-radius: 3rem;
-    }
-
-    .sign-up:hover {
-      background-color: var(--yellow);
-      color: var(--background-color);
-    }
-  }
-}
-
-#hero {
-  width: 50%;
-  margin: auto auto;
-  text-align: center;
-  .about {
-    font-size: 1rem;
-  }
 }
 
 @layer base {

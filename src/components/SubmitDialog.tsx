@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/dialog";
 import { Check, X } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Time from "./Time";
-import Memory from "./Memory";
+import { Time, Memory } from "./Icons";
+import { formatErrorMessage } from "@/lib/methods";
 
 interface TestCase {
   input: string;
@@ -31,15 +31,6 @@ interface SubmitResultDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-
-const formatErrorMessage = (stderr: string) => {
-  const lines = stderr.split("\n");
-  return lines.map((line, index) => (
-    <span key={index} className="block">
-      {line}
-    </span>
-  ));
-};
 
 function SubmitResult({
   testCases,

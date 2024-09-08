@@ -5,8 +5,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import Time from "./Time";
-import Memory from "./Memory";
+import { Time, Memory } from "./Icons";
+import { formatErrorMessage } from "@/lib/methods";
 
 interface ResultDialogProps {
   result: {
@@ -21,15 +21,6 @@ interface ResultDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-
-const formatErrorMessage = (stderr: string) => {
-  const lines = stderr.split("\n");
-  return lines.map((line, index) => (
-    <span key={index} className="block">
-      {line}
-    </span>
-  ));
-};
 
 export function ResultDialog({
   result,

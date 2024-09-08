@@ -1,12 +1,10 @@
+import { Example } from "@/lib/types";
+
 interface ExampleProps {
-  example: {
-    input: string;
-    output: string;
-    explanation: string;
-  };
+  example: Example;
 }
 
-function Example({ example }: ExampleProps) {
+function ExampleTile({ example }: ExampleProps) {
   return (
     <pre className="bg-[#2d2d2d] my-4 p-2 rounded whitespace-pre-wrap text-gray-300">
       <p>
@@ -22,4 +20,4 @@ function Example({ example }: ExampleProps) {
   );
 }
 
-export default Example;
+export default ExampleTile;

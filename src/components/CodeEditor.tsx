@@ -7,27 +7,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Editor from "@monaco-editor/react";
-import Spinner from "@/components/Spinner";
-import Example from "./Example";
+import { Spinner } from "@/components/Icons";
 import { ResultDialog } from "./RunDialog";
 import { SubmitResultDialog } from "./SubmitDialog";
+import { Problem } from "@/lib/types";
+import ExampleTile from "./ExampleTile";
 
 interface CodeEditorProps {
-  problem: {
-    title: string;
-    description: string;
-    difficulty: string;
-    examples: {
-      input: string;
-      output: string;
-      explanation: string;
-    }[];
-    testCases: {
-      input: string;
-      expectedOutput: string;
-    }[];
-    starterCode: string;
-  };
+  problem: Problem;
 }
 
 export function CodeEditor({ problem }: CodeEditorProps) {
@@ -106,7 +93,7 @@ export function CodeEditor({ problem }: CodeEditorProps) {
             <p className="text-gray-300">{problem.description}</p>
             <h3 className="text-xl font-semibold mt-4 mb-2">Examples:</h3>
             {problem.examples.map((example, index) => (
-              <Example example={example} key={index} />
+              <ExampleTile example={example} key={index} />
             ))}
           </div>
         </ResizablePanel>

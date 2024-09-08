@@ -9,21 +9,7 @@ import { Check, X } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Time, Memory } from "./Icons";
 import { formatErrorMessage } from "@/lib/methods";
-
-interface TestCase {
-  input: string;
-  expectedOutput: string;
-}
-
-interface Result {
-  compile_output: string;
-  memory: number;
-  message: null;
-  status: { id: number; description: string };
-  stderr: string;
-  stdout: string;
-  time: string;
-}
+import { Result, TestCase } from "@/lib/types";
 
 interface SubmitResultDialogProps {
   testCases?: TestCase[];

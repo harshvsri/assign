@@ -7,17 +7,10 @@ import {
 } from "@/components/ui/dialog";
 import { Time, Memory } from "./Icons";
 import { formatErrorMessage } from "@/lib/methods";
+import { Result } from "@/lib/types";
 
 interface ResultDialogProps {
-  result: {
-    compile_output: string;
-    memory: number;
-    message: null;
-    status: { id: number; description: string };
-    stderr: string;
-    stdout: string;
-    time: string;
-  } | null;
+  result: Result | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }

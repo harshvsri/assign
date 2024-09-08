@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import Editor from "@monaco-editor/react";
 import Spinner from "@/components/Spinner";
 import Example from "./Example";
-import { ResultDialog } from "./ResultDialog";
+import { ResultDialog } from "./RunDialog";
+import { SubmitResultDialog } from "./SubmitDialog";
 
 interface CodeEditorProps {
   problem: {
@@ -21,22 +22,31 @@ interface CodeEditorProps {
       output: string;
       explanation: string;
     }[];
+    testCases: {
+      input: string;
+      expectedOutput: string;
+    }[];
+    starterCode: string;
   };
 }
 
 export function CodeEditor({ problem }: CodeEditorProps) {
-  const [code, setCode] = useState("// Write your code here");
-  const [result, setResult] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [code, setCode] = useState(problem.starterCode);
+  const [runResult, setRunResult] = useState(null);
+  const [openRunDialog, setOpenRunDialog] = useState(false);
+  const [runLoading, setRunLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [openSubmitDialog, setOpenSubmitDialog] = useState(false);
+  const [submitResult, setSubmitResult] = useState(null);
 
-  const handleSubmit = async () => {
-    setLoading(true);
+  const handleRun = async () => {
+    setRunLoading(true);
+    const testCase = problem.testCases[0];
     const payload = {
       source_code: code,
       language_id: 63,
-      stdin: "3\n1 3 5",
-      expected_output: "9",
+      stdin: testCase.input,
+      expected_output: testCase.expectedOutput,
     };
     const res = await fetch("http://localhost:2358/submissions/?wait=true", {
       method: "POST",
@@ -46,10 +56,40 @@ export function CodeEditor({ problem }: CodeEditorProps) {
       body: JSON.stringify(payload),
     });
     const result = await res.json();
-    setLoading(false);
-    setResult(result);
-    setOpen(true);
+    setRunLoading(false);
+    setRunResult(result);
+    setOpenRunDialog(true);
     console.log(result);
+  };
+
+  const handleSubmit = async () => {
+    setSubmitLoading(true);
+    const testResults = await Promise.all(
+      problem.testCases.map(async (testCase, index) => {
+        const payload = {
+          source_code: code,
+          language_id: 63, // JavaScript
+          stdin: testCase.input,
+          expected_output: testCase.expectedOutput,
+        };
+        const res = await fetch(
+          "http://localhost:2358/submissions/?wait=true",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+        const result = await res.json();
+        return { ...result, testCaseIndex: index };
+      })
+    );
+    setSubmitLoading(false);
+    setSubmitResult(testResults);
+    setOpenSubmitDialog(true);
+    console.log(testResults);
   };
 
   return (
@@ -92,28 +132,35 @@ export function CodeEditor({ problem }: CodeEditorProps) {
               />
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={10} maxSize={20}>
+            <ResizablePanel defaultSize={10} minSize={10} maxSize={20}>
               <div
                 className="h-full p-4 flex flex-col justify-end space-y-4"
                 style={{ backgroundColor: "#1e1e1e" }}
               >
                 <div className="flex justify-end space-x-4">
                   <Button
+                    onClick={handleRun}
                     variant="default"
                     className="text-white bg-[#3a3a3a] hover:bg-[#4a4a4a]"
                   >
-                    Run
+                    {runLoading ? <Spinner /> : "Run"}
                   </Button>
                   <Button
                     onClick={handleSubmit}
                     className="text-white  bg-green-600 hover:bg-green-700"
                   >
-                    {loading ? <Spinner /> : "Submit"}
+                    {submitLoading ? <Spinner /> : "Submit"}
                   </Button>
                   <ResultDialog
-                    result={result}
-                    open={open}
-                    onOpenChange={setOpen}
+                    result={runResult}
+                    open={openRunDialog}
+                    onOpenChange={setOpenRunDialog}
+                  />
+                  <SubmitResultDialog
+                    testCases={problem.testCases}
+                    results={submitResult}
+                    open={openSubmitDialog}
+                    onOpenChange={setOpenSubmitDialog}
                   />
                 </div>
               </div>

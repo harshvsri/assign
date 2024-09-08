@@ -42,7 +42,7 @@ function SubmitResult({
         return (
           <div
             key={index}
-            className="flex items-start space-x-4 p-4 bg-gray-800 rounded-lg"
+            className="flex items-start space-x-4 p-4 bg-dark rounded-lg border-4 border-gray-700"
           >
             <div className="flex-shrink-0">
               {passed ? (
@@ -100,8 +100,8 @@ function SubmitResult({
                 </div>
               </div>
               {!passed && result?.stderr && (
-                <div className="mt-2 p-2 bg-red-900 rounded">
-                  <pre className="text-sm text-red-300 whitespace-pre-wrap">
+                <div className="mt-2 p-2 bg-dark rounded">
+                  <pre className="text-sm text-red-600 whitespace-pre-wrap">
                     {formatErrorMessage(result.stderr)}
                   </pre>
                 </div>

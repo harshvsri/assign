@@ -139,6 +139,7 @@ export function CodeEditor({ problem }: CodeEditorProps) {
                     {submitLoading ? <Spinner /> : "Submit"}
                   </Button>
                   <ResultDialog
+                    testCase={problem.testCases[0]}
                     result={runResult}
                     open={openRunDialog}
                     onOpenChange={setOpenRunDialog}

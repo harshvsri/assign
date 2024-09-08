@@ -1,10 +1,9 @@
-import { CodeEditor } from "./components/CodeEditor";
-import { problem } from "./lib/data";
+import { AuthPage } from "./components/AuthPage";
 
 function App() {
   return (
     <>
-      <CodeEditor problem={problem} />
+      <AuthPage />
     </>
   );
 }

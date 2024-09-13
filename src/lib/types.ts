@@ -5,6 +5,7 @@ export interface Problem {
   examples: Example[];
   testCases: TestCase[];
   starterCode: string;
+  inputFormat: string;
 }
 
 export interface Example {

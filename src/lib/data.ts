@@ -5,21 +5,22 @@ export const problem = {
   difficulty: "Easy",
   examples: [
     {
-      input: "arr = [2, 7, 11, 15], target = 9",
+      input: "size = 4\narr = [2, 7, 11, 15]\ntarget = 9",
       output: "[0, 1]",
       explanation: "Because nums[0] + nums[1] == 9, we return [0, 1].",
     },
     {
-      input: "arr = [3, 2, 4], target = 6",
+      input: "size = 3\narr = [3, 2, 4]\ntarget = 6",
       output: "[1, 2]",
       explanation: "Because nums[1] + nums[2] == 6, we return [1, 2].",
     },
     {
-      input: "arr = [3, 3], target = 6",
+      input: "size = 2\narr = [3, 3]\ntarget = 6",
       output: "[0, 1]",
       explanation: "Because nums[0] + nums[1] == 6, we return [0, 1].",
     },
   ],
+  inputFormat: "5\n2 7 11 15 9\n9",
   testCases: [
     {
       input: "4\n2 7 11 15\n9",
@@ -35,16 +36,14 @@ export const problem = {
     },
     {
       input: "4\n1 5 3 4\n7",
-      expectedOutput: "[ 1, 3 ]",
+      expectedOutput: "[ 2, 3 ]",
     },
     {
       input: "5\n1 2 3 4 5\n9",
       expectedOutput: "[ 3, 4 ]",
     },
   ],
-  starterCode: `"use strict";
-
-let input = "";
+  starterCode: `let input = "";
 let currentLine = 0;
 process.stdin.on("data", (input_data) => {
   input += input_data;
@@ -55,20 +54,23 @@ process.stdin.on("end", () => {
   main();
 });
 
+/**
+ * Read input from stdin 
+ * For number use Number(readLine().trim());
+ * For array use readLine().trim().split(" ").map(Number);
+ */
 const readLine = () => {
   return input[currentLine++];
 };
 
 const main = () => {
-  // This section needs to be handled by the user
-  // const size = Number(readLine().trim());
-  // const arr = readLine().trim().split(" ").map(Number);
+  // Handle the stdin input here
 
   // Main fn execution
-  console.log(arrSum(size, arr));
+  console.log(functionName());
 };
 
-const arrSum = (size, arr) => {
+const functionName = () => {
   // Enter your code here
 };
 `,

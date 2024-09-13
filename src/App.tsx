@@ -1,10 +1,11 @@
 import { ThemeProvider } from "./components/ThemeProvider";
-import { StudentDashboard } from "./components/StudentDashboard";
+import CodeWorkspace from "./components/CodeWorkspace";
+import { problem } from "./lib/data";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <StudentDashboard />
+      <CodeWorkspace problem={problem} />
     </ThemeProvider>
   );
 }

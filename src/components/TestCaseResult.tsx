@@ -1,7 +1,7 @@
 import { TestCase, Result } from "@/lib/types";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Memory, Time } from "./Icons";
-import { formatErrorMessage } from "@/lib/methods";
+import ErrorMessage from "@/components/ErrorMessage";
 
 interface TestCaseResultProps {
   testCase: TestCase;
@@ -60,7 +60,7 @@ function TestCaseResult({
       {!passed && result?.stderr && (
         <div className="mt-2 p-2 bg-dark rounded">
           <pre className="text-sm text-red-600 whitespace-pre-wrap">
-            {formatErrorMessage(result.stderr)}
+            <ErrorMessage stderr={result.stderr} />
           </pre>
         </div>
       )}

@@ -1,5 +1,3 @@
-'use client'
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LayoutDashboard, UserCircle, Menu, X } from "lucide-react";
+import { mockAssignments } from "@/lib/data";
 
 type Assignment = {
   id: string;
@@ -28,60 +27,41 @@ type Assignment = {
   dueDate: string;
 };
 
-const mockAssignments: Assignment[] = [
-  {
-    id: "1",
-    title: "Data Structures Assignment",
-    description: "Implement a binary search tree",
-    teacherName: "Dr. Smith",
-    dueDate: "2023-06-15",
-  },
-  {
-    id: "2",
-    title: "Algorithm Analysis",
-    description: "Analyze the time complexity of sorting algorithms",
-    teacherName: "Prof. Johnson",
-    dueDate: "2023-06-20",
-  },
-  {
-    id: "3",
-    title: "Database Systems",
-    description: "Design a normalized schema for a library management system",
-    teacherName: "Dr. Brown",
-    dueDate: "2023-06-25",
-  },
-];
-
 export function StudentDashboard() {
-  const [activeTab, setActiveTab] = useState<"assignments" | "account">("assignments");
+  const [activeTab, setActiveTab] = useState<"assignments" | "account">(
+    "assignments"
+  );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
         setIsMobileMenuOpen(false);
       }
     };
 
     if (isMobileMenuOpen) {
-      document.addEventListener('mousedown', handleOutsideClick);
+      document.addEventListener("mousedown", handleOutsideClick);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen]);
 
@@ -112,14 +92,14 @@ export function StudentDashboard() {
         {/* Mobile sidebar */}
         <div
           className={`fixed inset-0 bg-background/80 backdrop-blur-sm z-40 transition-opacity duration-300 ease-in-out ${
-            isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
           aria-hidden={!isMobileMenuOpen}
         >
           <div
             ref={sidebarRef}
             className={`fixed inset-y-0 left-0 w-64 bg-card border-r border-border shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${
-              isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+              isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
             }`}
           >
             <div className="flex justify-end p-4">

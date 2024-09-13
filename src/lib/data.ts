@@ -75,3 +75,27 @@ const functionName = () => {
 };
 `,
 };
+
+export const mockAssignments = [
+  {
+    id: "1",
+    title: "Data Structures Assignment",
+    description: "Implement a binary search tree",
+    teacherName: "Dr. Smith",
+    dueDate: "2023-06-15",
+  },
+  {
+    id: "2",
+    title: "Algorithm Analysis",
+    description: "Analyze the time complexity of sorting algorithms",
+    teacherName: "Prof. Johnson",
+    dueDate: "2023-06-20",
+  },
+  {
+    id: "3",
+    title: "Database Systems",
+    description: "Design a normalized schema for a library management system",
+    teacherName: "Dr. Brown",
+    dueDate: "2023-06-25",
+  },
+];

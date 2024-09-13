@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { CardDescription } from "@/components/ui/card";
-import { Assignment } from "./StudentDashboard";
+import { Assignment } from "@/lib/types";
 
 interface StudentAssignmentsProps {
   assignments: Assignment[];

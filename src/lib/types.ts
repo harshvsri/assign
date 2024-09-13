@@ -33,3 +33,11 @@ export interface Status {
   id: number;
   description: string;
 }
+
+export interface Assignment {
+  id: string;
+  title: string;
+  description: string;
+  teacherName: string;
+  dueDate: string;
+}

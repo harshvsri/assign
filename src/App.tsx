@@ -1,10 +1,10 @@
 import { ThemeProvider } from "./components/ThemeProvider";
-import StudentDashboard from "./components/StudentDashboard";
+import { AuthPage } from "./components/AuthPage";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <StudentDashboard />
+      <AuthPage />
     </ThemeProvider>
   );
 }

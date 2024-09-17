@@ -50,11 +50,13 @@ function TestCaseResult({
       <div className="flex flex-row justify-start gap-4 mt-2 text-white">
         <div className="flex flex-row items-center gap-2">
           <Time />
-          <span>{result ? parseFloat(result.time) * 1000 : 0} ms</span>
+          <span>
+            {result.time ? Math.round(Number(result.time) * 1000) : "-"} ms
+          </span>
         </div>
         <div className="flex flex-row items-center gap-2">
           <Memory />
-          <span>{result?.memory || 0} KB</span>
+          <span>{result?.memory || "-"} KB</span>
         </div>
       </div>
       {!passed && result?.stderr && (

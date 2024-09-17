@@ -99,3 +99,31 @@ export const mockAssignments = [
     dueDate: "2023-06-25",
   },
 ];
+
+export const languages = [
+  {
+    value: "cpp",
+    label: "C++",
+    id: 52,
+  },
+  {
+    value: "c",
+    label: "C",
+    id: 48,
+  },
+  {
+    value: "java",
+    label: "Java",
+    id: 62,
+  },
+  {
+    value: "javascript",
+    label: "JavaScript",
+    id: 63,
+  },
+  {
+    value: "python",
+    label: "Python",
+    id: 71,
+  },
+];

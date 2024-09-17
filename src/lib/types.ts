@@ -4,7 +4,6 @@ export interface Problem {
   difficulty: string;
   examples: Example[];
   testCases: TestCase[];
-  starterCode: string;
   inputFormat: string;
 }
 
@@ -38,6 +37,7 @@ export interface Assignment {
   id: string;
   title: string;
   description: string;
-  teacherName: string;
   dueDate: string;
+  problems: Problem[];
+  teacherName: string;
 }

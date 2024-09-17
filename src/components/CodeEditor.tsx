@@ -1,16 +1,17 @@
 import { Editor } from "@monaco-editor/react";
 
 interface CodeEditorProps {
+  language: string;
   code: string;
   setCode: (code: string) => void;
 }
 
-function CodeEditor({ code, setCode }: CodeEditorProps) {
+function CodeEditor({ language, code, setCode }: CodeEditorProps) {
   return (
     <Editor
       height="100%"
-      defaultLanguage="javascript"
-      defaultValue={code}
+      language={language}
+      value={code}
       onChange={(value) => {
         setCode(value || "");
       }}

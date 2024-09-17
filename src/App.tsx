@@ -1,10 +1,14 @@
 import { ThemeProvider } from "./components/ThemeProvider";
-import { AuthPage } from "./components/AuthPage";
+import AuthProvider from "react-auth-kit";
+import { store } from "./lib/store";
+import RouteComponent from "./components/RouteComponent";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <AuthPage />
+      <AuthProvider store={store}>
+        <RouteComponent />
+      </AuthProvider>
     </ThemeProvider>
   );
 }

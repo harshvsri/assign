@@ -1,9 +1,9 @@
 import { useState } from "react";
-// import { mockAssignments } from "@/lib/data";
 import StudentAssignments from "./StudentAssignments";
 import StudentAccount from "./StudentAccount";
 import StudentSidebar from "./StudentSidebar";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import SignOut from "./SignOut";
 import { assignments } from "@/lib/assignment";
 
 interface HeaderProps {
@@ -21,6 +21,7 @@ function Header({ name }: HeaderProps) {
     <header className="bg-card border-b border-border p-4 flex items-center justify-between md:justify-end">
       <div className="w-8 md:hidden" />
       <h1 className="text-xl font-semibold">Hello, {name}</h1>
+      <SignOut />
       <div className="w-8 md:hidden" />
     </header>
   );

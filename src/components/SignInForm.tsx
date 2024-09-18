@@ -1,13 +1,14 @@
+import { useState } from "react";
+import useSignIn from "react-auth-kit/hooks/useSignIn";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { School } from "lucide-react";
-import { useState } from "react";
-import useSignIn from "react-auth-kit/hooks/useSignIn";
 import ErrorAlert from "./ErrorAlert";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 import { Spinner } from "./Icons";
 
 function SignInForm() {
@@ -15,44 +16,39 @@ function SignInForm() {
   const signin = useSignIn();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState(null);
+  const [errors, setErrors] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log(formData);
-    const res = await fetch("http://localhost:3000/auth/student/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    const status = res.status;
-    const response = await res.json();
-    console.log("Status ", status);
-    if (response.errors) {
-      setErrors(response.errors);
-    }
-    if (status == 200) {
-      const decodedData = jwtDecode(response.accessToken);
-      if (
-        signin({
-          auth: {
-            token: response.accessToken,
-            type: "Bearer",
-          },
-          userState: decodedData,
-        })
-      ) {
-        console.log("Sign in successful");
-        // Redirect to dashboard
-        navigate("/dashboard");
-      } else {
-        console.log("Sign in failed");
+
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/auth/student/signin",
+        formData
+      );
+
+      if (res.status == 200) {
+        const { accessToken, refreshToken } = res.data;
+        const decodedData = jwtDecode(accessToken);
+        if (
+          signin({
+            auth: {
+              token: accessToken,
+              type: "Bearer",
+            },
+            refresh: refreshToken,
+            userState: decodedData,
+          })
+        ) {
+          navigate("/dashboard");
+        }
       }
+    } catch (error) {
+      setErrors(error.response.data.errors);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (

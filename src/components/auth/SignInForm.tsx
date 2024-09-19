@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { School } from "lucide-react";
 import ErrorAlert from "../common/ErrorAlert";
 import { jwtDecode } from "jwt-decode";
 import { Spinner } from "../common/Icons";
@@ -51,6 +50,10 @@ function SignInForm() {
     }
   };
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
   return (
     <div className={cn("grid gap-6")}>
       <form onSubmit={handleSubmit}>
@@ -71,9 +74,7 @@ function SignInForm() {
               autoComplete="email"
               autoCorrect="off"
               value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
+              onChange={handleChange}
             />
           </div>
           <div className="grid gap-1">
@@ -87,28 +88,12 @@ function SignInForm() {
               autoCapitalize="none"
               autoComplete="current-password"
               value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
+              onChange={handleChange}
             />
           </div>
           <Button type="submit">{isLoading ? <Spinner /> : "Sign In"}</Button>
         </div>
       </form>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
-        </div>
-      </div>
-      <Button variant="outline" type="button">
-        <School className="mr-2 h-4 w-4" />
-        Campus Login
-      </Button>
     </div>
   );
 }

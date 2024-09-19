@@ -1,7 +1,7 @@
 import { TestCase, Result } from "@/lib/types";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { Memory, Time } from "./Icons";
-import ErrorMessage from "@/components/ErrorMessage";
+import { Memory, Time } from "../common/Icons";
+import ErrorMessage from "@/components/common/ErrorMessage";
 
 interface TestCaseResultProps {
   testCase: TestCase;

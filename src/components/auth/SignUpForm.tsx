@@ -1,13 +1,25 @@
 import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import { School } from "lucide-react";
+import { useState } from "react";
 
 function SignUpForm() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
   return (
     <div className={cn("grid gap-6")}>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={handleSubmit}>
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="name">
@@ -19,6 +31,10 @@ function SignUpForm() {
               type="text"
               autoCapitalize="none"
               autoComplete="name"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
             />
           </div>
           <div className="grid gap-1">
@@ -32,6 +48,10 @@ function SignUpForm() {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
             />
           </div>
           <div className="grid gap-1">
@@ -44,9 +64,13 @@ function SignUpForm() {
               type="password"
               autoCapitalize="none"
               autoComplete="password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
             />
           </div>
-          <Button>Sign Up</Button>
+          <Button type="submit">Sign Up</Button>
         </div>
       </form>
       <div className="relative">

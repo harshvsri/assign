@@ -4,7 +4,7 @@ import SignUpForm from "./SignUpForm";
 import SignInForm from "./SignInForm";
 import Hero from "./Hero";
 
-export function AuthPage() {
+function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
 
   return (
@@ -38,3 +38,5 @@ export function AuthPage() {
     </div>
   );
 }
+
+export default AuthPage;

@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { languages } from "../lib/data";
+import { languages } from "@/lib/data";
 
 interface EditorOptionsProps {
   value: string;

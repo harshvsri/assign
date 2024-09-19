@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Problem } from "@/lib/types";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import RunDialog from "./RunDialog";
-import { Spinner } from "./Icons";
+import { Spinner } from "../common/Icons";
 
 interface RunCodeProps {
   problem: Problem;

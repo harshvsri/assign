@@ -2,11 +2,11 @@ import createRefresh from "react-auth-kit/createRefresh";
 import axios from "axios";
 
 const refresh = createRefresh({
-  interval: 15 * 60, // The time in sec to refresh the Access token,
+  interval: 10,
   refreshApiCallback: async (param) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/refresh",
+        "http://localhost:3000/auth/refresh",
         { refreshToken: param.refreshToken },
         {
           headers: { Authorization: `Bearer ${param.authToken}` },
@@ -16,8 +16,8 @@ const refresh = createRefresh({
       return {
         isSuccess: true,
         newAuthToken: response.data.token,
-        newAuthTokenExpireIn: 15 * 60, // 15 minutes
-        newRefreshTokenExpiresIn: 7 * 24 * 60 * 60, // 7 days
+        newAuthTokenExpireIn: 10,
+        newRefreshTokenExpiresIn: 60,
       };
     } catch (error) {
       console.error(error);

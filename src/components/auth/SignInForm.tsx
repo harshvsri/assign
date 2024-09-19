@@ -3,13 +3,13 @@ import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import { School } from "lucide-react";
-import ErrorAlert from "./ErrorAlert";
+import ErrorAlert from "../common/ErrorAlert";
 import { jwtDecode } from "jwt-decode";
-import { Spinner } from "./Icons";
+import { Spinner } from "../common/Icons";
 
 function SignInForm() {
   const navigate = useNavigate();

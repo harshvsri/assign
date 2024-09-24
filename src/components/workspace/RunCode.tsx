@@ -7,9 +7,10 @@ import { Spinner } from "../common/Icons";
 interface RunCodeProps {
   problem: Problem;
   code: string;
+  language_id: number;
 }
 
-function RunCode({ problem, code }: RunCodeProps) {
+function RunCode({ problem, code, language_id }: RunCodeProps) {
   const [runLoading, setRunLoading] = useState(false);
   const [openRunDialog, setOpenRunDialog] = useState(false);
   const [runResult, setRunResult] = useState(null);
@@ -19,17 +20,21 @@ function RunCode({ problem, code }: RunCodeProps) {
     const testCase = problem.testCases[0];
     const payload = {
       source_code: code,
-      language_id: 63,
+      language_id,
       stdin: testCase.input,
       expected_output: testCase.expectedOutput,
     };
-    const res = await fetch("http://localhost:2358/submissions/?wait=true", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+    console.log(JSON.stringify(payload));
+    const res = await fetch(
+      `${import.meta.env.VITE_JUDGE0_URL}/submissions/?wait=true`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
     const result = await res.json();
     setRunLoading(false);
     setRunResult(result);

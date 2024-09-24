@@ -39,7 +39,7 @@ function CodeWorkspace({ problem }: CodeWorkspaceProps) {
               <CodeEditor language={language} code={code} setCode={setCode} />
             </ResizablePanel>
             <ResizablePanel defaultSize={10}>
-              <CodeActions problem={problem} code={code} />
+              <CodeActions problem={problem} code={code} language={language} />
             </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>

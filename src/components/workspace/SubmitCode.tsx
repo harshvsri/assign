@@ -7,9 +7,10 @@ import { Spinner } from "../common/Icons";
 interface SubmitCodeProps {
   problem: Problem;
   code: string;
+  language_id: number;
 }
 
-function SubmitCode({ problem, code }: SubmitCodeProps) {
+function SubmitCode({ problem, code, language_id }: SubmitCodeProps) {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [openSubmitDialog, setOpenSubmitDialog] = useState(false);
   const [submitResult, setSubmitResult] = useState(null);
@@ -20,12 +21,12 @@ function SubmitCode({ problem, code }: SubmitCodeProps) {
       problem.testCases.map(async (testCase, index) => {
         const payload = {
           source_code: code,
-          language_id: 63, // JavaScript
+          language_id,
           stdin: testCase.input,
           expected_output: testCase.expectedOutput,
         };
         const res = await fetch(
-          "http://localhost:2358/submissions/?wait=true",
+          `${import.meta.env.VITE_JUDGE0_URL}/submissions/?wait=true`,
           {
             method: "POST",
             headers: {

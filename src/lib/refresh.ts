@@ -4,6 +4,7 @@ import axios from "axios";
 const refresh = createRefresh({
   interval: 10,
   refreshApiCallback: async (param) => {
+    console.log("Params form auth kit", param);
     try {
       const response = await axios.post(
         "http://localhost:3000/auth/refresh",
@@ -15,7 +16,7 @@ const refresh = createRefresh({
       console.log("Refreshing");
       return {
         isSuccess: true,
-        newAuthToken: response.data.token,
+        newAuthToken: response.data.accessToken,
         newAuthTokenExpireIn: 10,
         newRefreshTokenExpiresIn: 60,
       };

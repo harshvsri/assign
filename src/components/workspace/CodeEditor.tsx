@@ -18,7 +18,7 @@ function CodeEditor({ language, code, setCode }: CodeEditorProps) {
       theme="vs-dark"
       options={{
         minimap: { enabled: false },
-        fontSize: 18,
+        fontSize: 20,
         lineNumbers: "on",
         automaticLayout: true,
         wordWrap: "on",

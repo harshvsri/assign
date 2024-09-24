@@ -9,10 +9,12 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
+import { useQuery } from "@tanstack/react-query";
+import ErrorComponent from "../common/ErrorComponent";
+import { Spinner } from "../common/Icons";
 
 export interface AuthUser {
   id: string;
@@ -23,25 +25,37 @@ export interface AuthUser {
 function StudentAccount() {
   const authUser: AuthUser = useAuthUser();
   const authHeader = useAuthHeader();
-  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:3000/api/student?id=${authUser.id}`,
-          {
-            headers: { Authorization: authHeader },
-          }
-        );
-        setUser(res.data.student);
-        console.log(res.data.student);
-      } catch (error) {
-        console.log(error);
+  const fetchStudentData = async () => {
+    console.log("Fetching student data...");
+    const res = await axios.get(
+      `${import.meta.env.VITE_ASSIGN_API}/api/student?id=${authUser.id}`,
+      {
+        headers: { Authorization: authHeader },
       }
-    };
-    getUserData();
-  }, [authHeader, authUser.id]);
+    );
+    return res.data.student;
+  };
+
+  const {
+    data: user,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["student", authUser.id],
+    queryFn: fetchStudentData,
+    enabled: !!authUser.id,
+    staleTime: 1000 * 60 * 5, // Data is considered fresh for 5 minutes
+    refetchOnWindowFocus: false,
+  });
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (error) {
+    return <ErrorComponent />;
+  }
 
   return (
     <div>

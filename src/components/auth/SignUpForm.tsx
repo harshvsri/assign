@@ -24,7 +24,7 @@ function SignUpForm() {
   const handleSignUp = async (data) => {
     try {
       const res = await axios.post(
-        "http://localhost:3000/auth/student/signup",
+        `${import.meta.env.VITE_ASSIGN_API}/auth/student/signup`,
         data
       );
       if (res.status == 201) {

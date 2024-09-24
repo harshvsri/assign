@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { cn } from "@/lib/utils";
@@ -13,20 +14,15 @@ import { Spinner } from "../common/Icons";
 function SignInForm() {
   const navigate = useNavigate();
   const signin = useSignIn();
-  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState([]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
+  const handleSignIn = async (data) => {
     try {
       const res = await axios.post(
-        "http://localhost:3000/auth/student/signin",
-        formData
+        `${import.meta.env.VITE_ASSIGN_API}/auth/student/signin`,
+        data
       );
-
       if (res.status == 200) {
         const { accessToken, refreshToken } = res.data;
         const decodedData = jwtDecode(accessToken);
@@ -44,10 +40,20 @@ function SignInForm() {
         }
       }
     } catch (error) {
-      setErrors(error.response.data.errors);
-    } finally {
-      setIsLoading(false);
+      const errorMessages = error.response?.data?.errors || [
+        { msg: error.message },
+      ];
+      setErrors(errorMessages);
     }
+  };
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: handleSignIn,
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await mutateAsync(formData);
   };
 
   const handleChange = (e) => {
@@ -91,7 +97,7 @@ function SignInForm() {
               onChange={handleChange}
             />
           </div>
-          <Button type="submit">{isLoading ? <Spinner /> : "Sign In"}</Button>
+          <Button type="submit">{isPending ? <Spinner /> : "Sign In"}</Button>
         </div>
       </form>
     </div>

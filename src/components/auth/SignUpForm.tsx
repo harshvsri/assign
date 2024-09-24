@@ -5,15 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { Spinner } from "../common/Icons";
 import ErrorAlert from "../common/ErrorAlert";
+import UserToggle from "./UserToggle";
+import SubmitButton from "./SubmitButton";
 
 function SignUpForm() {
   const signin = useSignIn();
   const navigate = useNavigate();
+  const [role, setRole] = useState<"student" | "teacher">("student");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,7 +25,7 @@ function SignUpForm() {
   const handleSignUp = async (data) => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_ASSIGN_API}/auth/student/signup`,
+        `${import.meta.env.VITE_ASSIGN_API}/auth/${role}/signup`,
         data
       );
       if (res.status == 201) {
@@ -69,10 +70,12 @@ function SignUpForm() {
     <div className={cn("grid gap-6")}>
       <form onSubmit={handleSubmit}>
         <div className="grid gap-2">
+          <UserToggle role={role} setRole={setRole} />
           {errors &&
             errors.map((err, index) => (
               <ErrorAlert key={index} errorTitle={err.msg} />
             ))}
+
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="name">
               Name
@@ -116,7 +119,7 @@ function SignUpForm() {
               onChange={handleChange}
             />
           </div>
-          <Button type="submit">{isPending ? <Spinner /> : "Sign Up"}</Button>
+          <SubmitButton isPending={isPending} role={role} action="Sign up" />
         </div>
       </form>
     </div>

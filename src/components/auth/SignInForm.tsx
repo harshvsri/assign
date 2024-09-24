@@ -4,23 +4,24 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import ErrorAlert from "../common/ErrorAlert";
 import { jwtDecode } from "jwt-decode";
-import { Spinner } from "../common/Icons";
+import UserToggle from "./UserToggle";
+import SubmitButton from "./SubmitButton";
 
 function SignInForm() {
   const navigate = useNavigate();
   const signin = useSignIn();
+  const [role, setRole] = useState<"student" | "teacher">("student");
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState([]);
 
   const handleSignIn = async (data) => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_ASSIGN_API}/auth/student/signin`,
+        `${import.meta.env.VITE_ASSIGN_API}/auth/${role}/signin`,
         data
       );
       if (res.status == 200) {
@@ -64,10 +65,12 @@ function SignInForm() {
     <div className={cn("grid gap-6")}>
       <form onSubmit={handleSubmit}>
         <div className="grid gap-2">
+          <UserToggle role={role} setRole={setRole} />
           {errors &&
             errors.map((err, index) => (
               <ErrorAlert key={index} errorTitle={err.msg} />
             ))}
+
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
               Email
@@ -97,7 +100,7 @@ function SignInForm() {
               onChange={handleChange}
             />
           </div>
-          <Button type="submit">{isPending ? <Spinner /> : "Sign In"}</Button>
+          <SubmitButton isPending={isPending} role={role} action="Sign in" />
         </div>
       </form>
     </div>

@@ -5,26 +5,33 @@ import { CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Problem } from "@/lib/types";
 
-function ProblemCard({ title, difficulty, description }: Problem) {
+interface ProblemCardProps {
+  problem: Problem;
+}
+
+function ProblemCard({ problem }: ProblemCardProps) {
   const navigate = useNavigate();
   const completed = false;
   return (
     <Card className="mb-4">
       <CardHeader>
         <CardTitle className="text-md flex justify-between items-center">
-          {title}
+          {problem.title}
           {completed ? (
             <CheckCircle2 className="h-5 w-5 text-green-500" />
           ) : (
-            <Button onClick={() => navigate("/workspace")} size="sm">
+            <Button
+              onClick={() => navigate("/workspace", { state: { problem } })}
+              size="sm"
+            >
               Attempt
             </Button>
           )}
         </CardTitle>
-        <CardDescription>Difficulty: {difficulty}</CardDescription>
+        <CardDescription>Difficulty: {problem.difficulty}</CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-sm mb-2">{description}</p>
+        <p className="text-sm mb-2">{problem.description}</p>
       </CardContent>
     </Card>
   );

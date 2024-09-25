@@ -1,5 +1,5 @@
 import { useState } from "react";
-import StudentAssignments from "./Assignments";
+import StudentAssignments from "./StudentAssignments";
 import StudentAccount from "./StudentAccount";
 import StudentSidebar from "./StudentSidebar";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";

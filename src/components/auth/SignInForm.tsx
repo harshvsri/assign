@@ -37,7 +37,7 @@ function SignInForm() {
             userState: decodedData,
           })
         ) {
-          navigate("/dashboard");
+          navigate(`/${role}`);
         }
       }
     } catch (error) {

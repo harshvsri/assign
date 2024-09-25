@@ -41,7 +41,7 @@ function SignUpForm() {
             userState: decodedData,
           })
         ) {
-          navigate("/dashboard");
+          navigate(`/${role}`);
         }
       }
       return res.data;

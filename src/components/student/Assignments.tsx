@@ -48,7 +48,7 @@ function ProblemDialog({ assignment }: ProblemDialogProps) {
   );
 }
 
-function StudentAssignments({ assignments }: StudentAssignmentsProps) {
+function Assignments({ assignments }: StudentAssignmentsProps) {
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-bold mb-6">Assignments</h2>
@@ -77,4 +77,4 @@ function StudentAssignments({ assignments }: StudentAssignmentsProps) {
   );
 }
 
-export default StudentAssignments;
+export default Assignments;

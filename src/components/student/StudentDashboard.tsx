@@ -1,9 +1,9 @@
 import { useState } from "react";
-import StudentAssignments from "./StudentAssignments";
+import StudentAssignments from "./Assignments";
 import StudentAccount from "./StudentAccount";
 import StudentSidebar from "./StudentSidebar";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import SignOut from "./SignOut";
+import SignOut from "../common/SignOut";
 import { assignments } from "@/lib/assignment";
 
 interface HeaderProps {

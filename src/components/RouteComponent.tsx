@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RequireAuth from "@auth-kit/react-router/RequireAuth";
-import StudentDashboard from "./dashboard/StudentDashboard";
 import AuthPage from "./auth/AuthPage";
+import StudentDashboard from "./student/StudentDashboard";
+import TeacherDashboard from "./teacher/TeacherDashboard";
 import CodeWorkspace from "./workspace/CodeWorkspace";
 import { problem } from "@/lib/data";
 
@@ -11,10 +12,18 @@ const RouteComponent = () => {
       <Routes>
         <Route path={"/"} element={<AuthPage />} />
         <Route
-          path={"/dashboard"}
+          path={"/student"}
           element={
             <RequireAuth fallbackPath={"/"}>
               <StudentDashboard />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path={"/teacher"}
+          element={
+            <RequireAuth fallbackPath={"/"}>
+              <TeacherDashboard />
             </RequireAuth>
           }
         />

@@ -10,11 +10,12 @@ import { Label } from "../ui/label";
 import ErrorAlert from "../common/ErrorAlert";
 import UserToggle from "./UserToggle";
 import SubmitButton from "./SubmitButton";
+import { User } from "@/lib/types";
 
 function SignUpForm() {
   const signin = useSignIn();
   const navigate = useNavigate();
-  const [role, setRole] = useState<"student" | "teacher">("student");
+  const [role, setRole] = useState<User["role"]>("STUDENT");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,7 +26,9 @@ function SignUpForm() {
   const handleSignUp = async (data) => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_ASSIGN_API}/auth/${role}/signup`,
+        `${
+          import.meta.env.VITE_ASSIGN_API
+        }/auth/${role.toLocaleLowerCase()}/signup`,
         data
       );
       if (res.status == 201) {
@@ -41,7 +44,7 @@ function SignUpForm() {
             userState: decodedData,
           })
         ) {
-          navigate(`/${role}`);
+          navigate(`/${role.toLocaleLowerCase()}`);
         }
       }
       return res.data;

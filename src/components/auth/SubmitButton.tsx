@@ -4,7 +4,7 @@ import { Spinner } from "../common/Icons";
 
 interface SubmitButtonProps {
   isPending: boolean;
-  role: "student" | "teacher";
+  role: "STUDENT" | "TEACHER";
   action: string;
 }
 
@@ -15,7 +15,7 @@ function SubmitButton({ isPending, role, action }: SubmitButtonProps) {
         <Spinner />
       ) : (
         <>
-          {role === "teacher" ? (
+          {role === "TEACHER" ? (
             <School className="mr-2 h-4 w-4" />
           ) : (
             <User className="mr-2 h-4 w-4" />

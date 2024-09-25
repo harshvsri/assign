@@ -8,15 +8,10 @@ import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { useQuery } from "@tanstack/react-query";
 import ErrorComponent from "../common/ErrorComponent";
 import { Spinner } from "../common/Icons";
-
-export interface AuthUser {
-  id: string;
-  name: string;
-  role: "STUDENT" | "TEACHER";
-}
+import { User } from "@/lib/types";
 
 function TeacherAccount() {
-  const authUser: AuthUser = useAuthUser();
+  const authUser: User = useAuthUser();
   const authHeader = useAuthHeader();
 
   const fetchTeacherData = async () => {

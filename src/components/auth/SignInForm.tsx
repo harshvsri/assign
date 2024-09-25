@@ -10,18 +10,21 @@ import ErrorAlert from "../common/ErrorAlert";
 import { jwtDecode } from "jwt-decode";
 import UserToggle from "./UserToggle";
 import SubmitButton from "./SubmitButton";
+import { User } from "@/lib/types";
 
 function SignInForm() {
   const navigate = useNavigate();
   const signin = useSignIn();
-  const [role, setRole] = useState<"student" | "teacher">("student");
+  const [role, setRole] = useState<User["role"]>("STUDENT");
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState([]);
 
   const handleSignIn = async (data) => {
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_ASSIGN_API}/auth/${role}/signin`,
+        `${
+          import.meta.env.VITE_ASSIGN_API
+        }/auth/${role.toLocaleLowerCase()}/signin`,
         data
       );
       if (res.status == 200) {
@@ -37,7 +40,7 @@ function SignInForm() {
             userState: decodedData,
           })
         ) {
-          navigate(`/${role}`);
+          navigate(`/${role.toLocaleLowerCase()}`);
         }
       }
     } catch (error) {

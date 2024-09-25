@@ -3,14 +3,9 @@ import { CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Problem } from "@/lib/types";
 
-interface ProblemCardProps {
-  title: string;
-  difficulty: string;
-  description: string;
-}
-
-function ProblemCard({ title, difficulty, description }: ProblemCardProps) {
+function ProblemCard({ title, difficulty, description }: Problem) {
   const navigate = useNavigate();
   const completed = false;
   return (

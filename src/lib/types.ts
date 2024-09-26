@@ -1,3 +1,9 @@
+export interface User {
+  id: string;
+  name: string;
+  role: "STUDENT" | "TEACHER";
+}
+
 export interface Problem {
   title: string;
   description: string;
@@ -40,4 +46,13 @@ export interface Assignment {
   dueDate: string;
   problems: Problem[];
   teacherName: string;
+  course?: string;
+  year?: string;
+  branch?: string;
+}
+
+export interface SidebarProps {
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  name: string;
 }

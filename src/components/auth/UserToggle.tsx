@@ -2,8 +2,8 @@ import { School, User } from "lucide-react";
 import { Button } from "../ui/button";
 
 interface UserToggleProps {
-  role: "student" | "teacher";
-  setRole: (role) => void;
+  role: "STUDENT" | "TEACHER";
+  setRole: (role: "STUDENT" | "TEACHER") => void;
 }
 
 function UserToggle({ role, setRole }: UserToggleProps) {
@@ -11,26 +11,26 @@ function UserToggle({ role, setRole }: UserToggleProps) {
     <div className="flex rounded-md overflow-hidden border mb-4">
       <Button
         type="button"
-        variant={role === "student" ? "default" : "ghost"}
+        variant={role === "STUDENT" ? "default" : "ghost"}
         className={`flex-1 rounded-none ${
-          role === "student"
+          role === "STUDENT"
             ? "bg-primary text-primary-foreground"
             : "bg-background"
         }`}
-        onClick={() => setRole("student")}
+        onClick={() => setRole("STUDENT")}
       >
         <User className="mr-2 h-4 w-4" />
         Student
       </Button>
       <Button
         type="button"
-        variant={role === "teacher" ? "default" : "ghost"}
+        variant={role === "TEACHER" ? "default" : "ghost"}
         className={`flex-1 rounded-none ${
-          role === "teacher"
+          role === "TEACHER"
             ? "bg-primary text-primary-foreground"
             : "bg-background"
         }`}
-        onClick={() => setRole("teacher")}
+        onClick={() => setRole("TEACHER")}
       >
         <School className="mr-2 h-4 w-4" />
         Teacher

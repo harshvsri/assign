@@ -1,3 +1,4 @@
+import { LogOut } from "lucide-react";
 import { Button } from "../ui/button";
 import useSignOut from "react-auth-kit/hooks/useSignOut";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +13,12 @@ function SignOut() {
   };
 
   return (
-    <Button variant="outline" className="ml-4" onClick={handleClick}>
+    <Button
+      variant="ghost"
+      className="w-full justify-start"
+      onClick={handleClick}
+    >
+      <LogOut className="mr-2 h-4 w-4" />
       Sign out
     </Button>
   );

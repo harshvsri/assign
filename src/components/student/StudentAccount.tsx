@@ -15,15 +15,10 @@ import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { useQuery } from "@tanstack/react-query";
 import ErrorComponent from "../common/ErrorComponent";
 import { Spinner } from "../common/Icons";
-
-export interface AuthUser {
-  id: string;
-  name: string;
-  role: "STUDENT" | "TEACHER";
-}
+import { User } from "@/lib/types";
 
 function StudentAccount() {
-  const authUser: AuthUser = useAuthUser();
+  const authUser: User = useAuthUser();
   const authHeader = useAuthHeader();
 
   const fetchStudentData = async () => {
@@ -58,8 +53,7 @@ function StudentAccount() {
   }
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-6">Account</h2>
+    <div className="max-w-md p-4">
       <Card>
         <CardHeader>
           <CardTitle>Edit Profile</CardTitle>

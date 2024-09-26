@@ -29,6 +29,7 @@ function StudentAccount() {
         headers: { Authorization: authHeader },
       }
     );
+    console.log(res.data.student);
     return res.data.student;
   };
 
@@ -40,7 +41,7 @@ function StudentAccount() {
     queryKey: ["student", authUser.id],
     queryFn: fetchStudentData,
     enabled: !!authUser.id,
-    staleTime: 1000 * 60 * 5, // Data is considered fresh for 5 minutes
+    staleTime: 1000 * 60, // Data is considered fresh for 1 minutes
     refetchOnWindowFocus: false,
   });
 
@@ -62,17 +63,17 @@ function StudentAccount() {
           <form className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder={user?.name} />
+              <Input id="name" placeholder={user.name} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder={user?.email} />
+              <Input id="email" type="email" placeholder={user.email} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="course">Course</Label>
               <Select>
                 <SelectTrigger id="course">
-                  <SelectValue placeholder={user?.course} />
+                  <SelectValue placeholder={user.course} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="btech">BTECH</SelectItem>
@@ -83,7 +84,7 @@ function StudentAccount() {
               <Label htmlFor="year">Year</Label>
               <Select>
                 <SelectTrigger id="year">
-                  <SelectValue placeholder={user?.year} />
+                  <SelectValue placeholder={user.year} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="year_1">Year 1</SelectItem>
@@ -97,7 +98,7 @@ function StudentAccount() {
               <Label htmlFor="branch">Branch</Label>
               <Select>
                 <SelectTrigger id="branch">
-                  <SelectValue placeholder={user?.branch} />
+                  <SelectValue placeholder={user.branch} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="cse">CSE</SelectItem>

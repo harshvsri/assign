@@ -144,6 +144,11 @@ process.stdin.on("end", () => {
   main();
 });
 
+/**
+ * Read input from stdin 
+ * For number use Number(readLine().trim());
+ * For array use readLine().trim().split(" ").map(Number);
+ */
 const readLine = () => {
   return input[currentLine++];
 };

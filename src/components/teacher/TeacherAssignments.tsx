@@ -1,14 +1,12 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { CardDescription } from "@/components/ui/card";
 import { Assignment, User } from "@/lib/types";
-import AssignmentDialog from "./AssignmentDialog";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "../common/Icons";
 import ErrorComponent from "../common/ErrorComponent";
-import { assignments } from "@/lib/assignment";
 
 function StudentAssignments() {
   const authUser: User = useAuthUser();
@@ -16,19 +14,18 @@ function StudentAssignments() {
 
   const fetchStudentAssignments = async () => {
     const res = await axios.get(
-      `${import.meta.env.VITE_ASSIGN_API}/api/assignment/student?id=${
+      `${import.meta.env.VITE_ASSIGN_API}/api/assignment/teacher?id=${
         authUser.id
       }`,
       {
         headers: { Authorization: authHeader },
       }
     );
-    const apiAssignments = res.data.assignments;
-    return [...assignments, ...apiAssignments];
+    return res.data.assignments;
   };
 
   const { data, error, isLoading } = useQuery<Assignment[]>({
-    queryKey: ["student", authUser.id],
+    queryKey: ["teacher", authUser.id],
     queryFn: fetchStudentAssignments,
     enabled: !!authUser.id,
     staleTime: 1000 * 60, // Data is considered fresh for 1 minutes
@@ -59,9 +56,8 @@ function StudentAssignments() {
             <CardContent>
               <p className="mb-2 line-clamp-3">{assignment.description}</p>
               <p className="text-sm text-muted-foreground mb-4">
-                Teacher: {assignment.teacherName}
+                {`${assignment.course} . ${assignment.branch} . ${assignment.year}`}
               </p>
-              <AssignmentDialog assignment={assignment} />
             </CardContent>
           </Card>
         ))}

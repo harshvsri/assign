@@ -4,6 +4,7 @@ import {
   Verified,
   Lock,
   PlusCircle,
+  MessageCircle,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import SignOut from "../common/SignOut";
@@ -43,6 +44,16 @@ function SidebarContent({ activeTab, setActiveTab, name }: SidebarProps) {
         </li>
         <li>
           <Button
+            variant={activeTab === "ask-ai" ? "secondary" : "ghost"}
+            className="w-full justify-start"
+            onClick={() => setActiveTab("ask-ai")}
+          >
+            <MessageCircle className="mr-2 h-4 w-4" />
+            Ask AI
+          </Button>
+        </li>
+        <li>
+          <Button
             variant={activeTab === "account" ? "secondary" : "ghost"}
             className="w-full justify-start"
             onClick={() => setActiveTab("account")}
@@ -55,7 +66,7 @@ function SidebarContent({ activeTab, setActiveTab, name }: SidebarProps) {
           <Button
             variant={activeTab === "verify-account" ? "secondary" : "ghost"}
             className="w-full justify-start"
-            onClick={() => setActiveTab("verify-account")}
+            onClick={() => setActiveTab("null")}
           >
             <Verified className="mr-2 h-4 w-4" />
             Verify Account
@@ -65,7 +76,7 @@ function SidebarContent({ activeTab, setActiveTab, name }: SidebarProps) {
           <Button
             variant={activeTab === "change-password" ? "secondary" : "ghost"}
             className="w-full justify-start"
-            onClick={() => setActiveTab("change-password")}
+            onClick={() => setActiveTab("null")}
           >
             <Lock className="mr-2 h-4 w-4" />
             Change Password

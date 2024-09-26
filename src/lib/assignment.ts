@@ -82,39 +82,3 @@ export const assignments = [
     ],
   },
 ];
-
-const jsStarterCode = `let input = "";
-let currentLine = 0;
-process.stdin.on("data", (input_data) => {
-  input += input_data;
-});
-
-process.stdin.on("end", () => {
-  input = input.split("\\n");
-  main();
-});
-
-/**
- * Read input from stdin 
- * For number use Number(readLine().trim());
- * For array use readLine().trim().split(" ").map(Number);
- */
-const readLine = () => {
-  return input[currentLine++];
-};
-
-const main = () => {
-  // Handle the stdin input here
-
-  // Main fn execution
-  console.log(functionName());
-};
-
-const functionName = () => {
-  // Enter your code here
-};
-`;
-
-export const starterCode = {
-  63: jsStarterCode,
-};

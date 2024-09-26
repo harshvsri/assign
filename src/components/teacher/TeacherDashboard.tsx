@@ -4,9 +4,12 @@ import Sidebar from "./TeacherSidebar";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { CreateAssignment } from "./CreateAssignment";
 import { User } from "@/lib/types";
+import TeacherAssignments from "./TeacherAssignments";
+import ChatBot from "../common/ChatBot";
+import NotFound from "../common/NotFound";
 
 function TeacherDashboard() {
-  const user: User = useAuthUser();
+  const authUser: User = useAuthUser();
   const [activeTab, setActiveTab] = useState("assignments");
 
   return (
@@ -14,11 +17,14 @@ function TeacherDashboard() {
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        name={user.name}
+        name={authUser.name}
       />
       <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
+          {activeTab === "null" && <NotFound />}
+          {activeTab === "assignments" && <TeacherAssignments />}
           {activeTab === "create-assignment" && <CreateAssignment />}
+          {activeTab === "ask-ai" && <ChatBot />}
           {activeTab === "account" && <TeacherAccount />}
         </main>
       </div>

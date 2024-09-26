@@ -4,7 +4,6 @@ import AuthPage from "./auth/AuthPage";
 import StudentDashboard from "./student/StudentDashboard";
 import TeacherDashboard from "./teacher/TeacherDashboard";
 import CodeWorkspace from "./workspace/CodeWorkspace";
-import { problem } from "@/lib/data";
 import NotFound from "./common/NotFound";
 
 const RouteComponent = () => {
@@ -32,7 +31,7 @@ const RouteComponent = () => {
           path="/workspace"
           element={
             <RequireAuth fallbackPath={"/"}>
-              <CodeWorkspace problem={problem} />
+              <CodeWorkspace />
             </RequireAuth>
           }
         />

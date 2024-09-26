@@ -15,38 +15,9 @@ import {
 import { Label } from "@/components/ui/label";
 import { PlusIcon, TrashIcon } from "lucide-react";
 
-interface Example {
-  input: string;
-  output: string;
-  explanation: string;
-}
-
-interface TestCase {
-  input: string;
-  expectedOutput: string;
-}
-
-interface Problem {
-  title: string;
-  description: string;
-  starterCode: string;
-  difficulty: "EASY" | "MEDIUM" | "HARD";
-  examples: Example[];
-  testCases: TestCase[];
-}
-
-interface Assignment {
-  title: string;
-  description: string;
-  course: string;
-  year: string;
-  branch: string;
-  dueDate: string;
-  problems: Problem[];
-}
-
+// Main CreateAssignment component
 export function CreateAssignment() {
-  const [assignment, setAssignment] = useState<Assignment>({
+  const [assignment, setAssignment] = useState({
     title: "",
     description: "",
     course: "BTECH",
@@ -56,21 +27,15 @@ export function CreateAssignment() {
     problems: [],
   });
 
-  const handleAssignmentChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setAssignment({ ...assignment, [e.target.name]: e.target.value });
-  };
-
-  const handleSelectChange = (name: string, value: string) => {
-    setAssignment({ ...assignment, [name]: value });
+  const handleAssignmentChange = (updatedAssignment) => {
+    setAssignment((prev) => ({ ...prev, ...updatedAssignment }));
   };
 
   const addProblem = () => {
-    setAssignment({
-      ...assignment,
+    setAssignment((prev) => ({
+      ...prev,
       problems: [
-        ...assignment.problems,
+        ...prev.problems,
         {
           title: "",
           description: "",
@@ -80,417 +45,397 @@ export function CreateAssignment() {
           testCases: [],
         },
       ],
-    });
+    }));
   };
 
-  const removeProblem = (index: number) => {
-    const updatedProblems = [...assignment.problems];
-    updatedProblems.splice(index, 1);
-    setAssignment({ ...assignment, problems: updatedProblems });
+  const updateProblem = (index, updatedProblem) => {
+    setAssignment((prev) => ({
+      ...prev,
+      problems: prev.problems.map((p, i) => (i === index ? updatedProblem : p)),
+    }));
   };
 
-  const handleProblemChange = (
-    index: number,
-    field: keyof Problem,
-    value: string
-  ) => {
-    const updatedProblems = [...assignment.problems];
-    updatedProblems[index] = { ...updatedProblems[index], [field]: value };
-    setAssignment({ ...assignment, problems: updatedProblems });
+  const removeProblem = (index) => {
+    setAssignment((prev) => ({
+      ...prev,
+      problems: prev.problems.filter((_, i) => i !== index),
+    }));
   };
 
-  const addExample = (problemIndex: number) => {
-    const updatedProblems = [...assignment.problems];
-    updatedProblems[problemIndex].examples.push({
-      input: "",
-      output: "",
-      explanation: "",
-    });
-    setAssignment({ ...assignment, problems: updatedProblems });
-  };
-
-  const handleExampleChange = (
-    problemIndex: number,
-    exampleIndex: number,
-    field: keyof Example,
-    value: string
-  ) => {
-    const updatedProblems = [...assignment.problems];
-    updatedProblems[problemIndex].examples[exampleIndex][field] = value;
-    setAssignment({ ...assignment, problems: updatedProblems });
-  };
-
-  const removeExample = (problemIndex: number, exampleIndex: number) => {
-    const updatedProblems = [...assignment.problems];
-    updatedProblems[problemIndex].examples.splice(exampleIndex, 1);
-    setAssignment({ ...assignment, problems: updatedProblems });
-  };
-
-  const addTestCase = (problemIndex: number) => {
-    const updatedProblems = [...assignment.problems];
-    updatedProblems[problemIndex].testCases.push({
-      input: "",
-      expectedOutput: "",
-    });
-    setAssignment({ ...assignment, problems: updatedProblems });
-  };
-
-  const handleTestCaseChange = (
-    problemIndex: number,
-    testCaseIndex: number,
-    field: keyof TestCase,
-    value: string
-  ) => {
-    const updatedProblems = [...assignment.problems];
-    updatedProblems[problemIndex].testCases[testCaseIndex][field] = value;
-    setAssignment({ ...assignment, problems: updatedProblems });
-  };
-
-  const removeTestCase = (problemIndex: number, testCaseIndex: number) => {
-    const updatedProblems = [...assignment.problems];
-    updatedProblems[problemIndex].testCases.splice(testCaseIndex, 1);
-    setAssignment({ ...assignment, problems: updatedProblems });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Submitting assignment:", assignment);
     // Here you would typically send the assignment data to your backend
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Create Assignment</h1>
-      <form onSubmit={handleSubmit}>
-        <Card className="mb-6">
+    <div className="container mx-auto p-6 border rounded-lg">
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <Card>
           <CardHeader>
             <CardTitle>Assignment Details</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="title">Title</Label>
-                  <Input
-                    id="title"
-                    name="title"
-                    value={assignment.title}
-                    onChange={handleAssignmentChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="dueDate">Due Date</Label>
-                  <Input
-                    id="dueDate"
-                    name="dueDate"
-                    type="date"
-                    value={assignment.dueDate}
-                    onChange={handleAssignmentChange}
-                    required
-                  />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  value={assignment.description}
-                  onChange={handleAssignmentChange}
-                  required
-                />
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <Label htmlFor="course">Course</Label>
-                  <Select
-                    onValueChange={(value) =>
-                      handleSelectChange("course", value)
-                    }
-                    value={assignment.course}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select course" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="BTECH">B.Tech</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="year">Year</Label>
-                  <Select
-                    onValueChange={(value) => handleSelectChange("year", value)}
-                    value={assignment.year}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select year" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="YEAR_1">Year 1</SelectItem>
-                      <SelectItem value="YEAR_2">Year 2</SelectItem>
-                      <SelectItem value="YEAR_3">Year 3</SelectItem>
-                      <SelectItem value="YEAR_4">Year 4</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="branch">Branch</Label>
-                  <Select
-                    onValueChange={(value) =>
-                      handleSelectChange("branch", value)
-                    }
-                    value={assignment.branch}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select branch" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="CSE">CSE</SelectItem>
-                      <SelectItem value="CSE_AI">CSE AI</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </div>
+            <AssignmentDetails
+              assignment={assignment}
+              onChange={handleAssignmentChange}
+            />
           </CardContent>
         </Card>
 
-        <h2 className="text-xl font-semibold mb-4">Problems</h2>
-        {assignment.problems.map((problem, problemIndex) => (
-          <Card key={problemIndex} className="mb-6">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Problem {problemIndex + 1}</CardTitle>
-              <Button
-                type="button"
-                variant="destructive"
-                size="icon"
-                onClick={() => removeProblem(problemIndex)}
-              >
-                <TrashIcon className="h-4 w-4" />
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4">
-                <div>
-                  <Label htmlFor={`problem-title-${problemIndex}`}>Title</Label>
-                  <Input
-                    id={`problem-title-${problemIndex}`}
-                    value={problem.title}
-                    onChange={(e) =>
-                      handleProblemChange(problemIndex, "title", e.target.value)
-                    }
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor={`problem-description-${problemIndex}`}>
-                    Description
-                  </Label>
-                  <Textarea
-                    id={`problem-description-${problemIndex}`}
-                    value={problem.description}
-                    onChange={(e) =>
-                      handleProblemChange(
-                        problemIndex,
-                        "description",
-                        e.target.value
-                      )
-                    }
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor={`problem-starter-code-${problemIndex}`}>
-                    Starter Code
-                  </Label>
-                  <Textarea
-                    id={`problem-starter-code-${problemIndex}`}
-                    value={problem.starterCode}
-                    onChange={(e) =>
-                      handleProblemChange(
-                        problemIndex,
-                        "starterCode",
-                        e.target.value
-                      )
-                    }
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor={`problem-difficulty-${problemIndex}`}>
-                    Difficulty
-                  </Label>
-                  <Select
-                    onValueChange={(value) =>
-                      handleProblemChange(
-                        problemIndex,
-                        "difficulty",
-                        value as "EASY" | "MEDIUM" | "HARD"
-                      )
-                    }
-                    value={problem.difficulty}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select difficulty" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="EASY">Easy</SelectItem>
-                      <SelectItem value="MEDIUM">Medium</SelectItem>
-                      <SelectItem value="HARD">Hard</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+        <div>
+          <h2 className="text-2xl font-semibold mb-4">Problems</h2>
+          {assignment.problems.map((problem, index) => (
+            <ProblemCard
+              key={index}
+              problem={problem}
+              index={index}
+              onUpdate={(updatedProblem) =>
+                updateProblem(index, updatedProblem)
+              }
+              onRemove={() => removeProblem(index)}
+            />
+          ))}
+        </div>
 
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Examples</h3>
-                  {problem.examples.map((example, exampleIndex) => (
-                    <Card key={exampleIndex} className="mb-4">
-                      <CardHeader className="flex flex-row items-center justify-between py-2">
-                        <CardTitle className="text-base">
-                          Example {exampleIndex + 1}
-                        </CardTitle>
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="icon"
-                          onClick={() =>
-                            removeExample(problemIndex, exampleIndex)
-                          }
-                        >
-                          <TrashIcon className="h-4 w-4" />
-                        </Button>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid gap-2">
-                          <Input
-                            placeholder="Input"
-                            value={example.input}
-                            onChange={(e) =>
-                              handleExampleChange(
-                                problemIndex,
-                                exampleIndex,
-                                "input",
-                                e.target.value
-                              )
-                            }
-                          />
-                          <Input
-                            placeholder="Output"
-                            value={example.output}
-                            onChange={(e) =>
-                              handleExampleChange(
-                                problemIndex,
-                                exampleIndex,
-                                "output",
-                                e.target.value
-                              )
-                            }
-                          />
-                          <Input
-                            placeholder="Explanation"
-                            value={example.explanation}
-                            onChange={(e) =>
-                              handleExampleChange(
-                                problemIndex,
-                                exampleIndex,
-                                "explanation",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => addExample(problemIndex)}
-                  >
-                    <PlusIcon className="h-4 w-4 mr-2" />
-                    Add Example
-                  </Button>
-                </div>
+        <div className="flex flex-col gap-4 items-start">
+          <Button type="button" variant="outline" onClick={addProblem}>
+            <PlusIcon className="h-4 w-4 mr-2" />
+            Add Problem
+          </Button>
 
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Test Cases</h3>
-                  {problem.testCases.map((testCase, testCaseIndex) => (
-                    <Card key={testCaseIndex} className="mb-4">
-                      <CardHeader className="flex flex-row items-center justify-between py-2">
-                        <CardTitle className="text-base">
-                          Test Case {testCaseIndex + 1}
-                        </CardTitle>
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="icon"
-                          onClick={() =>
-                            removeTestCase(problemIndex, testCaseIndex)
-                          }
-                        >
-                          <TrashIcon className="h-4 w-4" />
-                        </Button>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid gap-2">
-                          <Input
-                            placeholder="Input"
-                            value={testCase.input}
-                            onChange={(e) =>
-                              handleTestCaseChange(
-                                problemIndex,
-                                testCaseIndex,
-                                "input",
-                                e.target.value
-                              )
-                            }
-                          />
-                          <Input
-                            placeholder="Expected Output"
-                            value={testCase.expectedOutput}
-                            onChange={(e) =>
-                              handleTestCaseChange(
-                                problemIndex,
-                                testCaseIndex,
-                                "expectedOutput",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => addTestCase(problemIndex)}
-                  >
-                    <PlusIcon className="h-4 w-4 mr-2" />
-                    Add Test Case
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-
-        <Button
-          type="button"
-          variant="outline"
-          onClick={addProblem}
-          className="mb-4"
-        >
-          <PlusIcon className="h-4 w-4 mr-2" />
-          Add Problem
-        </Button>
-
-        <Button type="submit">Create Assignment</Button>
+          <Button type="submit">Create Assignment</Button>
+        </div>
       </form>
     </div>
+  );
+}
+
+// AssignmentDetails component
+function AssignmentDetails({ assignment, onChange }) {
+  return (
+    <div className="grid gap-6">
+      <div className="grid grid-cols-2 gap-6">
+        <div>
+          <Label htmlFor="title">Title</Label>
+          <Input
+            id="title"
+            value={assignment.title}
+            onChange={(e) => onChange({ title: e.target.value })}
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor="dueDate">Due Date</Label>
+          <Input
+            id="dueDate"
+            type="date"
+            value={assignment.dueDate}
+            onChange={(e) => onChange({ dueDate: e.target.value })}
+            required
+            className="w-full"
+          />
+        </div>
+      </div>
+      <div>
+        <Label htmlFor="description">Description</Label>
+        <Textarea
+          id="description"
+          value={assignment.description}
+          onChange={(e) => onChange({ description: e.target.value })}
+          required
+        />
+      </div>
+      <div className="grid grid-cols-3 gap-6">
+        <div>
+          <Label htmlFor="course">Course</Label>
+          <Select
+            value={assignment.course}
+            onValueChange={(value) => onChange({ course: value })}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select course" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="BTECH">B.Tech</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label htmlFor="year">Year</Label>
+          <Select
+            value={assignment.year}
+            onValueChange={(value) => onChange({ year: value })}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select year" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="YEAR_1">Year 1</SelectItem>
+              <SelectItem value="YEAR_2">Year 2</SelectItem>
+              <SelectItem value="YEAR_3">Year 3</SelectItem>
+              <SelectItem value="YEAR_4">Year 4</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label htmlFor="branch">Branch</Label>
+          <Select
+            value={assignment.branch}
+            onValueChange={(value) => onChange({ branch: value })}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select branch" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="CSE">CSE</SelectItem>
+              <SelectItem value="CSE_AI">CSE AI</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ProblemCard component
+function ProblemCard({ problem, index, onUpdate, onRemove }) {
+  const handleChange = (field, value) => {
+    onUpdate({ ...problem, [field]: value });
+  };
+
+  const addExample = () => {
+    onUpdate({
+      ...problem,
+      examples: [
+        ...problem.examples,
+        { input: "", output: "", explanation: "" },
+      ],
+    });
+  };
+
+  const updateExample = (exampleIndex, updatedExample) => {
+    const updatedExamples = problem.examples.map((ex, i) =>
+      i === exampleIndex ? updatedExample : ex
+    );
+    onUpdate({ ...problem, examples: updatedExamples });
+  };
+
+  const removeExample = (exampleIndex) => {
+    const updatedExamples = problem.examples.filter(
+      (_, i) => i !== exampleIndex
+    );
+    onUpdate({ ...problem, examples: updatedExamples });
+  };
+
+  const addTestCase = () => {
+    onUpdate({
+      ...problem,
+      testCases: [...problem.testCases, { input: "", expectedOutput: "" }],
+    });
+  };
+
+  const updateTestCase = (testCaseIndex, updatedTestCase) => {
+    const updatedTestCases = problem.testCases.map((tc, i) =>
+      i === testCaseIndex ? updatedTestCase : tc
+    );
+    onUpdate({ ...problem, testCases: updatedTestCases });
+  };
+
+  const removeTestCase = (testCaseIndex) => {
+    const updatedTestCases = problem.testCases.filter(
+      (_, i) => i !== testCaseIndex
+    );
+    onUpdate({ ...problem, testCases: updatedTestCases });
+  };
+
+  return (
+    <Card className="mb-6">
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Problem {index + 1}</CardTitle>
+        <Button
+          type="button"
+          variant="destructive"
+          size="icon"
+          onClick={onRemove}
+        >
+          <TrashIcon className="h-4 w-4" />
+        </Button>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div>
+          <Label htmlFor={`problem-title-${index}`}>Title</Label>
+          <Input
+            id={`problem-title-${index}`}
+            value={problem.title}
+            onChange={(e) => handleChange("title", e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor={`problem-description-${index}`}>Description</Label>
+          <Textarea
+            id={`problem-description-${index}`}
+            value={problem.description}
+            onChange={(e) => handleChange("description", e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor={`problem-starter-code-${index}`}>Starter Code</Label>
+          <Textarea
+            id={`problem-starter-code-${index}`}
+            value={problem.starterCode}
+            onChange={(e) => handleChange("starterCode", e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor={`problem-difficulty-${index}`}>Difficulty</Label>
+          <Select
+            value={problem.difficulty}
+            onValueChange={(value) => handleChange("difficulty", value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select difficulty" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="EASY">Easy</SelectItem>
+              <SelectItem value="MEDIUM">Medium</SelectItem>
+              <SelectItem value="HARD">Hard</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Examples</h3>
+          {problem.examples.map((example, exampleIndex) => (
+            <ExampleCard
+              key={exampleIndex}
+              example={example}
+              index={exampleIndex}
+              onUpdate={(updatedExample) =>
+                updateExample(exampleIndex, updatedExample)
+              }
+              onRemove={() => removeExample(exampleIndex)}
+            />
+          ))}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={addExample}
+            className="mt-2"
+          >
+            <PlusIcon className="h-4 w-4 mr-2" />
+            Add Example
+          </Button>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Test Cases</h3>
+          {problem.testCases.map((testCase, testCaseIndex) => (
+            <TestCaseCard
+              key={testCaseIndex}
+              testCase={testCase}
+              index={testCaseIndex}
+              onUpdate={(updatedTestCase) =>
+                updateTestCase(testCaseIndex, updatedTestCase)
+              }
+              onRemove={() => removeTestCase(testCaseIndex)}
+            />
+          ))}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={addTestCase}
+            className="mt-2"
+          >
+            <PlusIcon className="h-4 w-4 mr-2" />
+            Add Test Case
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// ExampleCard component
+function ExampleCard({ example, index, onUpdate, onRemove }) {
+  const handleChange = (field, value) => {
+    onUpdate({ ...example, [field]: value });
+  };
+
+  return (
+    <Card className="mb-4">
+      <CardHeader className="flex flex-row items-center justify-between py-2">
+        <CardTitle className="text-base">Example {index + 1}</CardTitle>
+        <Button
+          type="button"
+          variant="destructive"
+          size="icon"
+          onClick={onRemove}
+        >
+          <TrashIcon className="h-4 w-4" />
+        </Button>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-2">
+          <Input
+            placeholder="Input"
+            value={example.input}
+            onChange={(e) => handleChange("input", e.target.value)}
+          />
+          <Input
+            placeholder="Output"
+            value={example.output}
+            onChange={(e) => handleChange("output", e.target.value)}
+          />
+          <Input
+            placeholder="Explanation"
+            value={example.explanation}
+            onChange={(e) => handleChange("explanation", e.target.value)}
+          />
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// TestCaseCard component
+function TestCaseCard({ testCase, index, onUpdate, onRemove }) {
+  const handleChange = (field, value) => {
+    onUpdate({ ...testCase, [field]: value });
+  };
+
+  return (
+    <Card className="mb-4">
+      <CardHeader className="flex flex-row items-center justify-between py-2">
+        <CardTitle className="text-base">Test Case {index + 1}</CardTitle>
+        <Button
+          type="button"
+          variant="destructive"
+          size="icon"
+          onClick={onRemove}
+        >
+          <TrashIcon className="h-4 w-4" />
+        </Button>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-2">
+          <Input
+            placeholder="Input"
+            value={testCase.input}
+            onChange={(e) => handleChange("input", e.target.value)}
+          />
+          <Input
+            placeholder="Expected Output"
+            value={testCase.expectedOutput}
+            onChange={(e) => handleChange("expectedOutput", e.target.value)}
+          />
+        </div>
+      </CardContent>
+    </Card>
   );
 }

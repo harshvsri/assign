@@ -46,6 +46,9 @@ export interface Assignment {
   dueDate: string;
   problems: Problem[];
   teacherName: string;
+  course?: string;
+  year?: string;
+  branch?: string;
 }
 
 export interface SidebarProps {

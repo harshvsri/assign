@@ -1,4 +1,10 @@
-import { LayoutDashboard, UserCircle, Verified, Lock } from "lucide-react";
+import {
+  LayoutDashboard,
+  UserCircle,
+  Verified,
+  Lock,
+  PlusCircle,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import SignOut from "../common/SignOut";
 import { SidebarProps } from "@/lib/types";
@@ -31,7 +37,7 @@ function SidebarContent({ activeTab, setActiveTab, name }: SidebarProps) {
             className="w-full justify-start"
             onClick={() => setActiveTab("create-assignment")}
           >
-            <LayoutDashboard className="mr-2 h-4 w-4" />
+            <PlusCircle className="mr-2 h-4 w-4" />
             Create Assignments
           </Button>
         </li>

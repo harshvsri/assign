@@ -5,6 +5,7 @@ import StudentDashboard from "./student/StudentDashboard";
 import TeacherDashboard from "./teacher/TeacherDashboard";
 import CodeWorkspace from "./workspace/CodeWorkspace";
 import { problem } from "@/lib/data";
+import NotFound from "./common/NotFound";
 
 const RouteComponent = () => {
   return (
@@ -35,6 +36,7 @@ const RouteComponent = () => {
             </RequireAuth>
           }
         />
+        <Route path={"*"} element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,9 +12,12 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { PlusIcon, TrashIcon } from "lucide-react";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
+import axios from "axios";
 
 // Main CreateAssignment component
 export function CreateAssignment() {
+  const authHeader = useAuthHeader();
   const [assignment, setAssignment] = useState({
     title: "",
     description: "",
@@ -62,10 +63,20 @@ export function CreateAssignment() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitting assignment:", assignment);
     // Here you would typically send the assignment data to your backend
+    const res = await axios.post(
+      `${import.meta.env.VITE_ASSIGN_API}/api/assignment`,
+      assignment,
+      {
+        headers: {
+          Authorization: authHeader,
+        },
+      }
+    );
+    console.log("Assignment created:", res.data);
   };
 
   return (

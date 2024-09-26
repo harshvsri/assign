@@ -28,7 +28,7 @@ function AssignmentDialog({ assignment }: AssignmentDialogProps) {
           <DialogTitle>{assignment.title} - Problems</DialogTitle>
         </DialogHeader>
         <div className="mt-4">
-          {assignment.problems.map((problem, index) => (
+          {assignment.problems?.map((problem, index) => (
             <ProblemCard key={index} problem={problem} />
           ))}
         </div>

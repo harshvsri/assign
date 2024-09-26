@@ -1,6 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-
 function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
@@ -29,11 +26,6 @@ function NotFound() {
           <line x1="9" y1="9" x2="9.01" y2="9" />
           <line x1="15" y1="9" x2="15.01" y2="9" />
         </svg>
-      </div>
-      <div className="mt-8">
-        <Button asChild>
-          <Link to="/">Go back home</Link>
-        </Button>
       </div>
     </div>
   );

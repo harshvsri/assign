@@ -4,18 +4,17 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { Problem } from "@/lib/types";
 import ProblemDescription from "./ProblemDescription";
 import CodeEditor from "./CodeEditor";
 import CodeActions from "./CodeActions";
 import EditorOptions from "./EditorOptions";
 import { starterCodes } from "@/lib/starterCode";
+import { useLocation } from "react-router-dom";
+import { sampleProblem } from "@/lib/data";
 
-interface CodeWorkspaceProps {
-  problem: Problem;
-}
-
-function CodeWorkspace({ problem }: CodeWorkspaceProps) {
+function CodeWorkspace() {
+  const location = useLocation();
+  const { problem } = location.state || sampleProblem;
   const [language, setLanguage] = useState("javascript");
   const [code, setCode] = useState(starterCodes[language]);
 
